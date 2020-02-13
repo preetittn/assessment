@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <title>question 5</title>
+    </head>
+    <body>
+        <script>
+                var employee=
+                [{name:"preeti",age:25, dob:"07/12/1993", salary:15100},
+                {name:"rohit",age:19, dob:"09/04/2000", salary:2000},
+                {name:"ankit",age:30, dob:"18/07/1990", salary:4000},
+                {name:"gaurav",age:40, dob:"29/03/1980", salary:6000}];
+                document.write("<i>part 1=>all employee's details</i>");
+                
+                for(var e in employee)
+                document.write("<br> Name: "+employee[e].name+ "  "+"Age"+employee[e].age+ "  "+"Date of Birth"+employee[e].dob+ 
+                "  "+"Salary"+employee[e].salary );
+
+
+                document.write("<br><br><i> part 2 =>filter all employees with salary greater than 5000</i>");
+                function by_sal(ob){
+                if(ob.salary > 5000){
+                        return ob;
+                    }
+                }
+                document.write("<br>::using stringfy function");
+                document.write("<br>"+JSON.stringify(employee.filter(by_sal)));
+
+                document.write("<br>::using for loop");
+                for(var e in employee)
+                {
+                    if(employee[e].salary >= 5000)
+                    document.write("<br>"+" "+employee[e].name);
+
+                }
+
+
+                document.write("<br><br> <i>part 3 =>group employee on the basis of their age</i>");
+                var agelessthan20=[];
+						var age21_30=[];
+						var age31above=[];
+						for(var e in employee){
+							if(employee[e].age<20)
+								 agelessthan20.push(employee[e].name);
+							else if(employee[e].age<=30)
+								 age21_30.push(employee[e].name);
+							else
+								 age31above.push(employee[e].name);
+						}
+				document.write("<br>age less than 20: "+agelessthan20);
+			    document.write("<br>age between 20 and 30: "+age21_30);
+				document.write("<br>age above 30: "+age31above+"<br>");
+
+                document.write("<br><br><i> part 4 =>fetch employees with salary less than 1000 and age greater than 20. Then give them an increment 5 times their salary.</i>");
+                var salinc=[];
+						for(var e in employee){
+							if(employee[e].salary<=5000 && employee[e].age>20)
+							{
+								document.write("<br>");
+								var old=employee[e].salary;
+								employee[e].salary=employee[e].salary*5;
+								document.write("name: "+employee[e].name+" old salary: "+old+" new salary: "+employee[e].salary);
+							}
+						}
+
+
+        </script>
+    </body>
+</html>

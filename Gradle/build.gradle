@@ -1,0 +1,55 @@
+plugins {
+    id 'java'
+}
+
+jar{                                                            //created a jar
+    manifest{
+        attributes(
+                'Main-Class':'Hello'
+        )
+    }
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+class ShowDatePlugin implements Plugin<Project> {                //custom plugin
+    @Override
+    void apply(Project project) {
+        project.task('showDate', type: ShowDate)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'                  //Q3
+    compile 'com.google.code.gson:gson:2.8.0'
+    runtime 'com.google.code.gson:gson:2.8.0'
+    testRuntime group: 'junit',name:'junit',version: '4.12'
+
+}
+
+class ShowDate extends DefaultTask{                             //custom task
+    String dateMessage='Current date: '
+
+    @TaskAction
+    void showDate()
+    {
+        println ""
+        println dateMessage =new Date()
+        println ""
+    }
+}
+
+task customShowDate(type: ShowDate){
+    dateMessage='date with custom task is: '
+}
+
+wrapper{                                            //Q5
+    version='4.2.1'
+}

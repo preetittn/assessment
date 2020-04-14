@@ -167,6 +167,6 @@ public String registerSeller(Seller seller)
 
     userRepo.save(seller);
 
-    return "Success";
+    return "success";
     }
 }

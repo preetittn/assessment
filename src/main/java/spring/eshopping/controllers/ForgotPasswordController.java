@@ -39,10 +39,10 @@ public class ForgotPasswordController {
         return getMessage;
     }
 //API TO RESET PASSWORD USING TOKEN
-    @PatchMapping("resetPassword")
-    public String resetPassword(@RequestParam String email, @RequestParam String token, @RequestParam String pass, @RequestParam String cPass, HttpServletResponse httpServletResponse){
-        String getMessage= forgotPasswordTokenService.resetPassword(email,token,pass,cPass);
 
+    @PatchMapping("/resetPassword")
+    public String resetPassword(@RequestParam(name="email") String email, @RequestParam(name="token") String token, @RequestParam(name="pass") String pass, @RequestParam(name="cpass") String cpass, HttpServletResponse httpServletResponse){
+        String getMessage = forgotPasswordTokenService.resetPassword(email, token, pass, cpass);
         if(getMessage.equals("Success"))
         {
             httpServletResponse.setStatus(HttpServletResponse.SC_CREATED);

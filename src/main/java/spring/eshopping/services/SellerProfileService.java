@@ -98,9 +98,9 @@ public class SellerProfileService {
         sellerRepo.save(seller);
         return "Success";
     }
-    public String updatePassword(String pass,String conPass,HttpServletRequest httpServletRequest)
+    public String updatePassword(String pass,String cPass,HttpServletRequest httpServletRequest)
     {
-        if (!pass.contentEquals(conPass)) {
+        if (!pass.contentEquals(cPass)) {
             return "Password and confirm password does not match";
         }
         if (!ValidPassword.isValidPassword(pass)) {

@@ -13,7 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 public class ForgotPasswordController {
     @Autowired
-    private TokenStore tokenStore;
+//    private
+    TokenStore tokenStore;
 
     @Autowired
     private ForgotPasswordTokenService forgotPasswordTokenService;

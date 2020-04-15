@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import spring.eshopping.dtos.AddressDTO;
 import spring.eshopping.dtos.SellerAddressDTO;
 import spring.eshopping.dtos.SellerProfileDTO;
 import spring.eshopping.entities.users.Address;
@@ -37,19 +36,15 @@ public class SellerProfileService {
     SendEmail sendEmail;
 
     @Autowired
-    ValidGst validGst;
-
-//    @Autowired
-    AddressDTO addressDTO;
-
-    @Autowired
     AddressRepo addressRepo;
 
-    public SellerProfileDTO viewProfile(HttpServletRequest httpServletRequest)
-    {
-        String sellerEmail=userEmailFromToken.getUserEmail(httpServletRequest);
-        Seller seller=sellerRepo.findByEmail(sellerEmail);
-        SellerProfileDTO sellerProfileDTO=modelMapper.map(seller,SellerProfileDTO.class);
+    @Autowired
+    ValidGst validGst;
+
+    public SellerProfileDTO viewProfile(HttpServletRequest request) {
+        String sellerEmail = userEmailFromToken.getUserEmail(request);
+        Seller seller = sellerRepo.findByEmail(sellerEmail);
+        SellerProfileDTO sellerProfileDTO = modelMapper.map(seller,SellerProfileDTO.class);
         // check image format then set
         sellerProfileDTO.setImage("some image");
         Set<Address> addresses = seller.getAddresses();
@@ -57,15 +52,15 @@ public class SellerProfileService {
         sellerProfileDTO.setAddress(sellerAddressDTO);
         return sellerProfileDTO;
     }
-    public String updateProfile(SellerProfileDTO sellerProfileDTO,HttpServletRequest httpServletRequest)
-    {
+
+    public String updateSeller(SellerProfileDTO sellerProfileDTO,HttpServletRequest request) {
         if ((sellerProfileDTO.getCompanyContact() != null) && sellerProfileDTO.getCompanyContact().length()!=10) {
             return "invalid contact";
         }
         if ((sellerProfileDTO.getGst() != null) && (validGst.checkGstValid(sellerProfileDTO.getGst())!=true)) {
             return "gst format is invalid";
         }
-        Seller seller = sellerRepo.findByEmail(userEmailFromToken.getUserEmail(httpServletRequest));
+        Seller seller = sellerRepo.findByEmail(userEmailFromToken.getUserEmail(request));
         try {
             if (sellerProfileDTO.getFirstName() != null) {
                 seller.setFirstName(sellerProfileDTO.getFirstName());
@@ -98,8 +93,8 @@ public class SellerProfileService {
         sellerRepo.save(seller);
         return "Success";
     }
-    public String updatePassword(String pass,String cPass,HttpServletRequest httpServletRequest)
-    {
+
+    public String updatePassword(String pass,String cPass,HttpServletRequest request) {
         if (!pass.contentEquals(cPass)) {
             return "Password and confirm password does not match";
         }
@@ -107,7 +102,7 @@ public class SellerProfileService {
             return "password format invalid";
         }
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        Seller seller = sellerRepo.findByEmail(userEmailFromToken.getUserEmail(httpServletRequest));
+        Seller seller = sellerRepo.findByEmail(userEmailFromToken.getUserEmail(request));
         seller.setPassword(passwordEncoder.encode(pass));
 
         sellerRepo.save(seller);
@@ -116,13 +111,13 @@ public class SellerProfileService {
 
         return "Success";
     }
-    public String updateAddress(Long id,SellerAddressDTO sellerAddressDTO,HttpServletRequest httpServletRequest)
-    {
+
+    public String updateAddress(Long id, SellerAddressDTO addressDTO, HttpServletRequest request) {
         Optional<Address> address = addressRepo.findById(id);
         if (!address.isPresent()) {
             return "no address fount with id " + id;
         }
-        Seller seller = sellerRepo.findByEmail(userEmailFromToken.getUserEmail(httpServletRequest));
+        Seller seller = sellerRepo.findByEmail(userEmailFromToken.getUserEmail(request));
         Set<Address> addresses = seller.getAddresses();
         addresses.forEach(a->{
             if (a.getId() == address.get().getId()) {

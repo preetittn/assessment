@@ -28,7 +28,7 @@ public class SellerController {
 
     @PatchMapping("")
     public String updateProfile(@RequestBody SellerProfileDTO sellerProfileDTO, HttpServletRequest request, HttpServletResponse response) {
-        String getMessage = sellerProfileService.updateProfile(sellerProfileDTO,request);
+        String getMessage = sellerProfileService.updateSeller(sellerProfileDTO,request);
         if ("Success".contentEquals(getMessage)) {
             response.setStatus(HttpServletResponse.SC_CREATED);
         } else {
@@ -38,7 +38,7 @@ public class SellerController {
     }
 
     @PutMapping("/updatePassword")
-    public String updatePassword(@RequestParam String pass, @RequestParam String cPass, HttpServletRequest request, HttpServletResponse response) {
+    public String updatePassword(@RequestParam String pass,@RequestParam String cPass,HttpServletRequest request,HttpServletResponse response) {
         String getMessage = sellerProfileService.updatePassword(pass,cPass,request);
         if ("Success".contentEquals(getMessage)) {
             response.setStatus(HttpServletResponse.SC_CREATED);
@@ -59,3 +59,4 @@ public class SellerController {
         return getMessage;
     }
 }
+

@@ -1,6 +1,7 @@
 package spring.eshopping.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import spring.eshopping.entities.users.*;
@@ -14,12 +15,10 @@ import spring.eshopping.utils.ValidPassword;
 
 import java.util.*;
 
-// REGISTER
 @Service
 public class UserRegisterService {
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
 
     @Autowired
     UserRepo userRepo;
@@ -73,6 +72,7 @@ public String registerCustomer(Customer customer)
     Set<Role> roleSet=new HashSet<>();
     roleSet.add(role);
     customer.setRoles(roleSet);
+    customer.setCreatedBy(customer.getFirstName());
     customer.setDateCreated(new Date());
     customer.setLocked(false);
     customer.setPasswordExpired(false);
@@ -84,7 +84,7 @@ public String registerCustomer(Customer customer)
     CustomerActivate customerActivate=new CustomerActivate();
     customerActivate.setToken(token);
     customerActivate.setUserEmail(customer.getEmail());
-    customerActivate.setExpiryDate(new Date());
+    customerActivate.setExpiryDate(new Date());//created time not expiry date
 
     customerActivateRepo.save(customerActivate);
 

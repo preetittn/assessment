@@ -10,9 +10,7 @@ import spring.eshopping.entities.users.Admin;
 import spring.eshopping.entities.users.Role;
 import spring.eshopping.repositories.UserRepo;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class Bootstrap implements ApplicationRunner {
@@ -21,12 +19,11 @@ public class Bootstrap implements ApplicationRunner {
     UserRepo userRepo;
 
     @Override
-    public void run(ApplicationArguments arguments) throws Exception{
-        if(userRepo.count()<1)
-        {
-            PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();;
+    public void run(ApplicationArguments arguments) throws Exception {
+        if (userRepo.count() < 1) {
+            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-            Admin preeti=new Admin();
+            Admin preeti = new Admin();
             preeti.setFirstName("Preeti");
             preeti.setLastName("Upadhyay");
             preeti.setEmail("preeti@mail.com");
@@ -38,17 +35,20 @@ public class Bootstrap implements ApplicationRunner {
             preeti.setDeleted(false);
             preeti.setPassword(passwordEncoder.encode("password"));
 
-            Role role=new Role();
+            Role role = new Role();
             role.setAuthority("ROLE_ADMIN");
-            Role role1=new Role();
+            Role role1 = new Role();
             role1.setAuthority("ROLE_CUSTOMER");
-            Set<Role> roleSet=new HashSet<>();
+
+            Set<Role> roleSet = new HashSet<>();
             roleSet.add(role);
             roleSet.add(role1);
+
             preeti.setRoles(roleSet);
 
             userRepo.save(preeti);
-            System.out.println("total number of users saved:"+userRepo.count());
+            System.out.println("total number of users saved:" + userRepo.count());
         }
+
     }
 }

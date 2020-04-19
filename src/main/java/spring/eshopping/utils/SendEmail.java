@@ -22,7 +22,7 @@ public class SendEmail {
         mailSender.setPassword(emailConfig.getPassword());
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setFrom("admin@ecommerce.com");
+        mailMessage.setFrom("admin@eshopping.com");
         mailMessage.setTo(sendTo);
         mailMessage.setSubject(subject);
         mailMessage.setText(text);

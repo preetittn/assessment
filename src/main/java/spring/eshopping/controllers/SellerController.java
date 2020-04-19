@@ -4,16 +4,22 @@ package spring.eshopping.controllers;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import spring.eshopping.dtos.CategoryDTO;
 import spring.eshopping.dtos.SellerAddressDTO;
 import spring.eshopping.dtos.SellerProfileDTO;
+import spring.eshopping.services.CategoryService;
 import spring.eshopping.services.SellerProfileService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
 @RequestMapping("/seller/profile")
 public class SellerController {
+
+    @Autowired
+    CategoryService categoryService;
 
     @Autowired
     SellerProfileService sellerProfileService;
@@ -57,6 +63,10 @@ public class SellerController {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
         return getMessage;
+    }
+    @GetMapping("/categories")
+    public List<CategoryDTO> viewLeafCategories() {
+        return categoryService.viewLeafCategories();
     }
 }
 

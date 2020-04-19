@@ -3,7 +3,6 @@ package spring.eshopping.entities.users;
 import com.fasterxml.jackson.annotation.JsonFilter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Pattern;
 import java.util.Date;
 import java.util.Set;
 
@@ -13,12 +12,11 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String firstName;
     private String middleName;
     private String lastName;
-    @Pattern(regexp = "[a-zA-Z][a-zA-Z0-9_.]*@[a-zA-Z]+[.][a-zA-Z]+", message = "Invalid Email Format")
     private String email;
     private String password;
     private boolean isActive;
@@ -30,13 +28,22 @@ public class User {
     private String createdBy;
     private String updatedBy;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinTable(name="user_role",joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
-                inverseJoinColumns = @JoinColumn(name = "role_id",referencedColumnName = "id"))
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
+            , inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Address> addresses;
+
+
+    public Set<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(Set<Address> addresses) {
+        this.addresses = addresses;
+    }
 
     public Long getId() {
         return id;
@@ -46,20 +53,20 @@ public class User {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getMiddleName() {
         return middleName;
     }
 
     public void setMiddleName(String middleName) {
         this.middleName = middleName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
@@ -86,6 +93,14 @@ public class User {
         this.password = password;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     public boolean isActive() {
         return isActive;
     }
@@ -100,22 +115,6 @@ public class User {
 
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
-    }
-
-    public boolean isPasswordExpired() {
-        return isPasswordExpired;
-    }
-
-    public void setPasswordExpired(boolean passwordExpired) {
-        isPasswordExpired = passwordExpired;
-    }
-
-    public boolean isLocked() {
-        return isLocked;
-    }
-
-    public void setLocked(boolean locked) {
-        isLocked = locked;
     }
 
     public Date getDateCreated() {
@@ -150,41 +149,20 @@ public class User {
         this.updatedBy = updatedBy;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public boolean isPasswordExpired() {
+        return isPasswordExpired;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setPasswordExpired(boolean passwordExpired) {
+        isPasswordExpired = passwordExpired;
     }
 
-    public Set<Address> getAddresses() {
-        return addresses;
+    public boolean isLocked() {
+        return isLocked;
     }
 
-    public void setAddresses(Set<Address> addresses) {
-        this.addresses = addresses;
+    public void setLocked(boolean locked) {
+        isLocked = locked;
     }
 
-//    @Override
-//    public String toString() {
-//        return "User{" +
-//                "id=" + id +
-//                ", firstName='" + firstName + '\'' +
-//                ", middleName='" + middleName + '\'' +
-//                ", lastName='" + lastName + '\'' +
-//                ", email='" + email + '\'' +
-//                ", password='" + password + '\'' +
-//                ", isActive=" + isActive +
-//                ", isDeleted=" + isDeleted +
-//                ", isPasswordExpired=" + isPasswordExpired +
-//                ", isLocked=" + isLocked +
-//                ", dateCreated=" + dateCreated +
-//                ", lastUpdated=" + lastUpdated +
-//                ", createdBy='" + createdBy + '\'' +
-//                ", updatedBy='" + updatedBy + '\'' +
-//                ", roles=" + roles +
-//                ", addresses=" + addresses +
-//                '}';
-//    }
 }

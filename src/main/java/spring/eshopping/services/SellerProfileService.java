@@ -17,6 +17,7 @@ import spring.eshopping.utils.ValidGst;
 import spring.eshopping.utils.ValidPassword;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -45,8 +46,6 @@ public class SellerProfileService {
         String sellerEmail = userEmailFromToken.getUserEmail(request);
         Seller seller = sellerRepo.findByEmail(sellerEmail);
         SellerProfileDTO sellerProfileDTO = modelMapper.map(seller,SellerProfileDTO.class);
-        // check image format then set
-        sellerProfileDTO.setImage("some image");
         Set<Address> addresses = seller.getAddresses();
         SellerAddressDTO sellerAddressDTO = modelMapper.map(addresses.stream().findFirst().get(),SellerAddressDTO.class);
         sellerProfileDTO.setAddress(sellerAddressDTO);
@@ -60,6 +59,22 @@ public class SellerProfileService {
         if ((sellerProfileDTO.getGst() != null) && (validGst.checkGstValid(sellerProfileDTO.getGst())!=true)) {
             return "gst format is invalid";
         }
+        if (sellerProfileDTO.getGst()!=null) {
+            List<Seller> anotherLocalSeller1 = sellerRepo.findByGst(sellerProfileDTO.getGst());
+            boolean flag = false;
+            for (Seller seller1 : anotherLocalSeller1) {
+                if (seller1.getGst().equals(sellerProfileDTO.getGst())) {
+                    flag = true;
+                    break;
+                }
+            }
+            try {
+                if (flag == true) {
+                    return "gst should be unique";
+                }
+            } catch (NullPointerException ex) {
+            }
+        }
         Seller seller = sellerRepo.findByEmail(userEmailFromToken.getUserEmail(request));
         try {
             if (sellerProfileDTO.getFirstName() != null) {
@@ -69,24 +84,33 @@ public class SellerProfileService {
                 seller.setLastName(sellerProfileDTO.getLastName());
             }
             if (sellerProfileDTO.getCompanyContact() != null) {
-                Seller anotherLocalSeller = sellerRepo.findByCompanyName(sellerProfileDTO.getCompanyName());
+                Seller anotherLocalSeller = sellerRepo.findByCompanyContact(sellerProfileDTO.getCompanyContact());
                 try {
-                    if (anotherLocalSeller.getCompanyName().equalsIgnoreCase(seller.getCompanyName())) {
-                        return "company name should be unique";
+                    if (anotherLocalSeller.getCompanyContact().equalsIgnoreCase(seller.getCompanyContact())) {
+                        return "company contact number should be unique";
                     }
                 } catch (NullPointerException ex) {
 //            ex.printStackTrace();
                 }
                 seller.setCompanyContact(sellerProfileDTO.getCompanyContact());
             }
+
+
             if (sellerProfileDTO.getCompanyName() != null) {
+                Seller anotherLocalSeller = sellerRepo.findByCompanyName(sellerProfileDTO.getCompanyName());
+                try {
+                    if (anotherLocalSeller.getCompanyName().equalsIgnoreCase(sellerProfileDTO.getCompanyName())) {
+                        return "company name should be unique";
+                    }
+                } catch (NullPointerException ex) {
+//            ex.printStackTrace();
+                }
                 seller.setCompanyName(sellerProfileDTO.getCompanyName());
             }
+
+
             if (sellerProfileDTO.getGst() != null) {
                 seller.setGst(sellerProfileDTO.getGst());
-            }
-            if (sellerProfileDTO.getImage() != null) {
-                // check image format and then update
             }
         } catch (NullPointerException ex) {}
 
@@ -115,7 +139,7 @@ public class SellerProfileService {
     public String updateAddress(Long id, SellerAddressDTO addressDTO, HttpServletRequest request) {
         Optional<Address> address = addressRepo.findById(id);
         if (!address.isPresent()) {
-            return "no address fount with id " + id;
+            return "no address found with id " + id;
         }
         Seller seller = sellerRepo.findByEmail(userEmailFromToken.getUserEmail(request));
         Set<Address> addresses = seller.getAddresses();
@@ -125,7 +149,7 @@ public class SellerProfileService {
                 a.setCity(addressDTO.getCity());
                 a.setCountry(addressDTO.getCountry());
                 a.setState(addressDTO.getState());
-                a.setZipcode(addressDTO.getZipCode());
+                a.setZipCode(addressDTO.getZipCode());
                 a.setAddress(addressDTO.getAddress());
             }
         });

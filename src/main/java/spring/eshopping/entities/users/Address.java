@@ -6,14 +6,16 @@ import javax.persistence.*;
 
 @Entity
 public class Address {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+
+    private String country;
     private String city;
     private String state;
-    private String country;
+    private Integer zipCode;
     private String address;
-    private Integer zipcode;
     private String label;
 
     @JsonIgnore
@@ -27,6 +29,22 @@ public class Address {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String street) {
+        this.country = street;
     }
 
     public String getCity() {
@@ -45,36 +63,20 @@ public class Address {
         this.state = state;
     }
 
-    public String getCountry() {
-        return country;
+    public Integer getZipCode() {
+        return zipCode;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setZipCode(Integer pinCode) {
+        this.zipCode = pinCode;
     }
 
     public String getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public Integer getZipcode() {
-        return zipcode;
-    }
-
-    public void setZipcode(Integer zipcode) {
-        this.zipcode = zipcode;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
+    public void setAddress(String description) {
+        this.address = description;
     }
 
     public User getUser() {

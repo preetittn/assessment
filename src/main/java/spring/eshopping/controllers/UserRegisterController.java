@@ -10,6 +10,7 @@ import spring.eshopping.services.UserRegisterService;
 import spring.eshopping.utils.SendEmail;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 //USER REGISTRATION API
 @RestController
@@ -23,7 +24,7 @@ public class UserRegisterController {
 
     //API TO REGISTER CUSTOMER
     @PostMapping("register/customer")
-    public String registerCustomer(@RequestBody Customer customer, HttpServletResponse httpServletResponse){
+    public String registerCustomer(@Valid @RequestBody Customer customer, HttpServletResponse httpServletResponse){
         String getMessage =userRegisterService.registerCustomer(customer);
 
         if(getMessage.equals("success"))
@@ -39,7 +40,7 @@ public class UserRegisterController {
 
 //API TO REGISTER SELLER
     @PostMapping("register/seller")
-    public String registerSeller(@RequestBody Seller seller, HttpServletResponse httpServletResponse){
+    public String registerSeller(@Valid @RequestBody Seller seller, HttpServletResponse httpServletResponse){
         String getMessage =userRegisterService.registerSeller(seller);
         if(getMessage.equals("success"))
         {

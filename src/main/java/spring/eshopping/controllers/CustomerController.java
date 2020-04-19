@@ -5,15 +5,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import spring.eshopping.dtos.AddressDTO;
 import spring.eshopping.dtos.CustomerProfileDTO;
+import spring.eshopping.entities.category.Category;
+import spring.eshopping.services.CategoryService;
 import spring.eshopping.services.CustomerProfileService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+
 
 @RestController
 @RequestMapping("/customer/profile")
 public class CustomerController {
+
+    @Autowired
+    CategoryService categoryService;
 
     @Autowired
     CustomerProfileService customerProfileService;
@@ -22,10 +30,8 @@ public class CustomerController {
     private ModelMapper modelMapper;
 
     @GetMapping("")
-    public CustomerProfileDTO viewProfile(HttpServletRequest request) {//kyunki token chahiye
+    public CustomerProfileDTO viewProfile(HttpServletRequest request) {
         CustomerProfileDTO customerProfileDTO = modelMapper.map(customerProfileService.viewProfile(request),CustomerProfileDTO.class);
-        // check image format then set
-        customerProfileDTO.setImage("image");
         return customerProfileDTO;
     }
 
@@ -88,4 +94,16 @@ public class CustomerController {
         }
         return getMessage;
     }
+
+    @GetMapping("/categories")
+    public List<Category> viewLeafCategories(@RequestParam Optional<Long> categoryId) {
+        return categoryService.viewCategoriesSameParent(categoryId);
+    }
+
+    @GetMapping("/filterCategories/{categoryId}")
+    public List<?> filterCategory(@PathVariable Long categoryId)
+    {
+        return categoryService.filterCategory(categoryId);
+    }
 }
+

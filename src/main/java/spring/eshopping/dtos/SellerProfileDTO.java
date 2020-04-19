@@ -5,7 +5,6 @@ public class SellerProfileDTO {
     private String firstName;
     private String lastName;
     private Boolean isActive;
-    private String image;
     private String gst;
     private String companyContact;
     private String companyName;
@@ -41,14 +40,6 @@ public class SellerProfileDTO {
 
     public void setActive(Boolean active) {
         isActive = active;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public String getGst() {

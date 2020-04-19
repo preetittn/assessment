@@ -1,6 +1,5 @@
 package spring.eshopping.services;
 
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -54,15 +53,13 @@ public class CustomerProfileService {
         try {
             if (!(customerProfileDTO.getFirstName()  == null)){
                 customer.setFirstName(customerProfileDTO.getFirstName());
+                customer.setCreatedBy(customerProfileDTO.getFirstName());
             }
             if (!(customerProfileDTO.getLastName() == null)){
                 customer.setLastName(customerProfileDTO.getLastName());
             }
             if (!(customerProfileDTO.getContact() == null)) {
                 customer.setContact(customerProfileDTO.getContact());
-            }
-            if (!(customerProfileDTO.getImage() == null)) {
-                //to do -> check image format then update image
             }
         } catch (NullPointerException ex) {
         }
@@ -138,7 +135,7 @@ public class CustomerProfileService {
                 a.setCountry(addressDTO.getCountry());
                 a.setLabel(addressDTO.getLabel());
                 a.setState(addressDTO.getState());
-                a.setZipcode(addressDTO.getZipCode());
+                a.setZipCode(addressDTO.getZipCode());
                 a.setAddress(addressDTO.getAddress());
             }
         });

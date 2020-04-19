@@ -31,13 +31,13 @@ public class CustomerActivateService {
     //TO ACTIVATE CUSTOMER
     public String activateCustomer(String token) {
         CustomerActivate customerActivate = customerActivateRepo.findByToken(token);
-        try {
-            if (customerActivate.getToken().equals(null)) {
+//        try {
+            if (customerActivate==(null)) {
                 return "invalid token";
             }
-        } catch (NullPointerException ex) {
-            return "invalid token";
-        }
+//        } catch (NullPointerException ex) {
+//            return "invalid token";
+//        }
         Date date = new Date();
         long diff = date.getTime() - customerActivate.getExpiryDate().getTime();
         long diffHours = diff / (60 * 60 * 1000);

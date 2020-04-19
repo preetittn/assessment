@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 import spring.eshopping.entities.users.User;
 import spring.eshopping.repositories.UserRepo;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
